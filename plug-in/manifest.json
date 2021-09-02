@@ -39,7 +39,7 @@
     "http://*/*",
     "https://*/*"
   ],
-  "web_accessible_resources": ["js/inject.js"],
+  "web_accessible_resources": ["js/jquery.min.js", "js/axios.min.js", "js/inject.js"],
   "homepage_url": "https://www.baidu.com",
   "options_page": "options.html",
   "options_ui":

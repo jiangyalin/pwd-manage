@@ -1,48 +1,59 @@
 const express = require('express')
 const router = express.Router()
-const fs = require('fs')
+const db = require('./../../db')
+const createPwd = require('./../../create-pwd')
 
-router.get('/get', function (req, res) {
-  console.log('get.params', req.params)
-  const data = {
-    code: 200,
-    data: {
-      total: 'd',
-      rows: 'p',
-      test: 'http://180.169.20.145:8099/test/2020/20200710113211281.jpg',
-      fl: 33,
-      fr: 73
-    },
-    msg: ''
+router.get('/get', (req, res) => {
+  const host = req.query.host || ''
+  const data = db.query(host)
+  let code = 200
+  let msg = ''
+  if (db.query(host) === null) {
+    code = 400
+    msg = '不存在记录'
   }
-  res.jsonp(data)
+  const body = {
+    code,
+    data,
+    msg
+  }
+  res.jsonp(body)
 })
 
-router.post('/api', function (req, res) {
-  tool.writeData('test', {
-    query: req.query,
-    body: req.body,
-    headers: req.headers
+router.post('/create', (req, res) => {
+  const host = req.body.host || ''
+  let code = 200
+  let msg = ''
+  let pwd = ''
+  if (host === null) {
+    code = 300
+    msg = '域名不允许为空'
+  } else {
+    pwd = createPwd(16)
+  }
+  db.create({
+    host,
+    pwd
   })
-  const data = {
-    code: 200,
-    data: {},
-    msg: ''
+  const body = {
+    code,
+    data: pwd,
+    msg
   }
-  res.jsonp(data)
+  res.jsonp(body)
 })
 
-router.delete('/delete', function (req, res) {
-  console.log('get.query', req.query)
-  const data = {
-    code: 200,
-    data: {
-      total: 'd',
-      rows: 'p'
-    },
-    msg: ''
-  }
-  res.jsonp(data)
-})
+// router.delete('/delete', (req, res) => {
+//   console.log('get.query', req.query)
+//   const data = {
+//     code: 200,
+//     data: {
+//       total: 'd',
+//       rows: 'p'
+//     },
+//     msg: ''
+//   }
+//   res.jsonp(data)
+// })
 
 module.exports = router
