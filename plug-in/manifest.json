@@ -1,0 +1,52 @@
+{
+  "manifest_version": 2,
+  "name": "pwd-manage",
+  "version": "1.0.0",
+  "description": "密码管理器",
+  "icons":
+  {
+    "16": "img/pwd.png",
+    "48": "img/pwd.png",
+    "128": "img/pwd.png"
+  },
+  "background":
+  {
+    "page": "background.html"
+  },
+  "browser_action":
+  {
+    "default_icon": "img/pwd.png",
+    "default_title": "这是一个密码管理器",
+    "default_popup": "popup.html"
+  },
+  "content_scripts":
+  [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["index.js"],
+      "css": ["css/custom.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions":
+  [
+    "contextMenus",
+    "tabs",
+    "notifications",
+    "webRequest",
+    "webRequestBlocking",
+    "storage",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "web_accessible_resources": ["js/inject.js"],
+  "homepage_url": "https://www.baidu.com",
+  "options_page": "options.html",
+  "options_ui":
+  {
+    "page": "options.html",
+    "chrome_style": true
+  },
+  "omnibox": { "keyword" : "pwd" },
+  "devtools_page": "devtools.html"
+}
