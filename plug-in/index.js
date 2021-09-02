@@ -11,7 +11,58 @@ const getPwd = host => {
   })
 }
 
+const createPwd = (type, length, host, callback) => {
+  window.$.post('http://192.168.0.14:8021/api/create', {
+    type,
+    length,
+    host
+  }, res => {
+    if (res.code !== 200) return false
+    callback(res)
+  })
+}
+
+const html = () => {
+  return '<form class="m-create-box j-create-box">\n' +
+    '  <label><input type="radio" name="type" value="1" />数字</label><br/>\n' +
+    '  <label><input type="radio" name="type" value="2" />数字+字母</label><br/>\n' +
+    '  <label><input type="radio" name="type" value="3" checked />数字+大小写字母</label><br/>\n' +
+    '  <label><input type="radio" name="type" value="4" />数字+大小写字母+符号</label><br/>\n' +
+    '  <lable>密码长度<input type="number" name="length" value="6" /></lable><br/>\n' +
+    '  <p>结果:<span class="j-text"></span></p><br/>\n' +
+    '  <button class="u-btn j-btn" type="button">确定</button>\n' +
+    '</form>'
+}
+
+const formData = {
+  type: '',
+  length: 16
+}
+
+// window.$('body').on('click', '.j-create-box', function () {
+//   console.log('a')
+// })
+
+// window.$('body').on('click', '.j-btn', function () {
+//   console.dir(this)
+//   console.dir(window.document.querySelector('.j-create-box'))
+// })
 const host = window.location.host
-console.log('test', checkPwdInput())
-getPwd(host)
+
+window.$('body').on('click', '.j-create-box .j-btn', function () {
+  window.$('.j-create-box [name="type"]').each(function () {
+    if (window.$(this)[0].checked) formData.type = Number(window.$(this).val())
+  })
+  formData.length = Number(window.$('.j-create-box [name="length"]').val())
+  createPwd(formData.type, formData.length, host, res => {
+    window.$('.j-create-box .j-text').text(res.data)
+    window.$('input[type="password"]').val(res.data)
+  })
+})
+
+window.$('body').append(html())
+
+// console.log('test', checkPwdInput())
+// getPwd(host)
+// createPwd(host)
 // console.log('axios', axios)

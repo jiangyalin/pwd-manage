@@ -19,7 +19,7 @@ const createRandomNumArr = (max = 9, length = 12, arr = []) => {
 }
 
 // 创建密码(长度,包含数字,包含字母,包含大小写,包含符号)
-const createPwd = (length = 12, isDigit = true, isLetter = true, isCase = true, isSymbol = true) => {
+const createPwd = (length = 12, { isDigit = true, isLetter = true, isCase = true, isSymbol = true }) => {
   const list = []
   if (isDigit) list.push(...digit)
   if (isLetter) list.push(...letter)
